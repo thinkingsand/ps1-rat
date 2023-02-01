@@ -1,0 +1,9 @@
+*.cue
+*.iso
+*.dep
+*.elf
+*.map
+*.BAT
+*.bin
+*.ps-exe
+*.o

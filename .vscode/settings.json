@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "MAIN.C": "cpp",
+        "readcd.c": "cpp",
+        "controller.c": "cpp",
+        "constants.c": "cpp",
+        "MAIN-O.C": "cpp"
+    }
+}
