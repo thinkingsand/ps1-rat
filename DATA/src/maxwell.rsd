@@ -1,6 +1,7 @@
 #RSD data describing the relationships to the PLY, MAT, and texture files
 @RSD940102 
-PLY=rat.ply
-MAT=rat.mat
-NTEX=1
-TEX[0]=RatTex1.tim
+PLY=maxwell.ply
+MAT=maxwell.mat
+NTEX=2
+TEX[0]=CATBODY.tim
+TEX[1]=CATBODY.tim

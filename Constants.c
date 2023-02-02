@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <libgte.h>
 #include <libgpu.h>
 #include <libgs.h>
@@ -80,7 +81,7 @@ void audioTransferVagToSPU(char* sound, int sound_size, int voice_channel) {
 		SPU_VOICE_ADSR_SL
 		);
 
-	g_s_attr.voice = (SPU_0CH);
+	g_s_attr.voice = (voice_channel);
 	
 	g_s_attr.volume.left  = 0x1fff;
 	g_s_attr.volume.right = 0x1fff;
@@ -97,6 +98,7 @@ void audioTransferVagToSPU(char* sound, int sound_size, int voice_channel) {
 	g_s_attr.sl           = 0xf;
 
 	SpuSetVoiceAttr (&g_s_attr);
+	SpuSetKey(SPU_OFF, voice_channel);
 
 }
 

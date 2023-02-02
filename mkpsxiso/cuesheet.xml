@@ -10,7 +10,10 @@
 			<file name="RAT.TMD"	type="data"	source="DATA/RAT.TMD"/>
 			<file name="RATTEX1.TIM"	type="data"	source="DATA/RATTEX1.TIM"/>
 			<file name="FREEBIRD.VAG"	type="data"	source="DATA/FREEBIRD.VAG"/>
-			<dummy sectors="1024"/>
+			<file name="CAT.TMD"	type="data"	source="DATA/CAT.TMD"/>
+			<file name="CATBODY.TIM"	type="data"	source="DATA/CATBODY.TIM"/>
+			<file name="MAXWELL.VAG"	type="data"	source="DATA/MAXWELL.VAG"/>
+			<dummy sectors="1"/>
 		</directory_tree>
 	</track>
 </iso_project>
