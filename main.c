@@ -5,7 +5,6 @@
 #include "Constants.c"
 #include "Controller.c"
 #include "ReadCD.c"
-#include "Audio.c"
 #include "2D.c"
 #include "3D.c"
 
@@ -25,7 +24,7 @@ int rotationSpeed = 20;
 //Store all your CD Files Here
 //the number is how many files
 //you eventually want to load.
-u_long* cdData[2];
+u_long* cdData[3];
 
 // Every TMD model you load needs a struct
 //as showd below
@@ -37,7 +36,6 @@ struct {
 //The main function is the first
 //thing that runs in your game
 int main() {
-
     //all the functions here are described below
 
  	Initialize();
@@ -77,6 +75,7 @@ void Initialize() {
     //The number is the slot you want to store the file into.
 	cd_read_file("RAT.TMD", &cdData[0]);
 	cd_read_file("RATTEX1.TIM", &cdData[1]);
+	cd_read_file("FREEBIRD.VAG", &cdData[2]);
 
 	//Stop reading the CD
 	cd_close();
@@ -87,6 +86,10 @@ void Initialize() {
 	//stored the RATTEX1.TIM texture in slot 1
     loadTexture((u_char *)cdData[1]);
 
+	//init spu
+	audioInit();
+    audioTransferVagToSPU(cdData[2], 180576, SPU_0CH); //dma transfer audio to SPU
+	SpuSetKey(SpuOn, SPU_0CH); //start playback
 }
 
 //This function runs once right after he Initialize function
@@ -161,7 +164,12 @@ void Update () {
 	//do stuff when buttons are pressed (more info below)
 	Controls();
 
-    rat.rotation.vy += rotationSpeed;
+    rat.rotation.vy += rotationSpeed; //autospin the rat
+
+	if(SpuGetKeyStatus(SPU_0CH)  == SPU_ON_ENV_OFF) {
+		printf("Looping audio\n");
+		SpuSetKey(SpuOn, SPU_0CH); //restart spu playback
+	}
 
 }
 
@@ -181,7 +189,7 @@ void Render () {
 	//FntPrint("Select: Reset Rat\n");
 	FntPrint("Rat Position: (%d, %d, %d)\n", rat.position.vx, rat.position.vy, rat.position.vz);
 	FntPrint("Rat Rotation: (%d)\n", rat.rotation.vy);
-	FntPrint("Nex Likes Piss");
+	FntPrint("Nex Likes Piss\n");
 
 	// Calculate the camera and viewpoint
 	CalculateCamera();

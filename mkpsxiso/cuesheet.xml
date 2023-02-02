@@ -9,6 +9,7 @@
 			<!-- Add your own files or folders here -->
 			<file name="RAT.TMD"	type="data"	source="DATA/RAT.TMD"/>
 			<file name="RATTEX1.TIM"	type="data"	source="DATA/RATTEX1.TIM"/>
+			<file name="FREEBIRD.VAG"	type="data"	source="DATA/FREEBIRD.VAG"/>
 			<dummy sectors="1024"/>
 		</directory_tree>
 	</track>
