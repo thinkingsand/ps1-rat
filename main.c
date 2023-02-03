@@ -1,3 +1,7 @@
+//#define EXE_BOOT
+#define CD_BOOT
+#define DEBUG
+
 //Include all the features you want for your project here
 //Each of these files contains a set of functions you can
 //use in your projects.
@@ -7,6 +11,15 @@
 #include "ReadCD.c"
 #include "2D.c"
 #include "3D.c"
+
+#ifdef EXE_BOOT
+	#include "DATA/CAT.H"
+	#include "DATA/CATBODY.H"
+	#include "DATA/FREEBIRD.H"
+	#include "DATA/MAXWELL.H"
+	#include "DATA/RAT.H"
+	#include "DATA/RATTEX1.H"
+#endif
 
 //Declare any function you make here
 void Initialize();
@@ -24,7 +37,9 @@ int rotationSpeed = 20;
 //Store all your CD Files Here
 //the number is how many files
 //you eventually want to load.
+#ifdef CD_BOOT
 u_long* cdData[6];
+#endif
 
 bool isRatEnabled = true;
 bool isCatEnabled = false;
@@ -45,7 +60,6 @@ struct {
 //thing that runs in your game
 int main() {
     //all the functions here are described below
-
 
  	Initialize();
 	Start();
@@ -77,31 +91,41 @@ void Initialize() {
 	//reading input from the controller
 	initializePad();
 
-    //Start reading the CD
-	cd_open();
+	//if booted from cd load files
+	#ifdef CD_BOOT
+		//Start reading the CD
+		cd_open();
 
-	//read a specific file by name and
-	//store it in the cdData variable.
-	//(make sure to edit mkpsxiso/cuesheet.xml and
-    //add it there or it won't be included on the CD)
-    //The number is the slot you want to store the file into.
-	cd_read_file("RAT.TMD", &cdData[0]);
-	cd_read_file("RATTEX1.TIM", &cdData[1]);
-	cd_read_file("FREEBIRD.VAG", &cdData[2]);
-	cd_read_file("CAT.TMD", &cdData[3]);
-	cd_read_file("CATBODY.TIM", &cdData[4]);
-	cd_read_file("MAXWELL.VAG", &cdData[5]);
+		//read a specific file by name and
+		//store it in the cdData variable.
+		//(make sure to edit mkpsxiso/cuesheet.xml and
+		//add it there or it won't be included on the CD)
+		//The number is the slot you want to store the file into.
+		cd_read_file("RAT.TMD", &cdData[0]);
+		cd_read_file("RATTEX1.TIM", &cdData[1]);
+		cd_read_file("FREEBIRD.VAG", &cdData[2]);
+		cd_read_file("CAT.TMD", &cdData[3]);
+		cd_read_file("CATBODY.TIM", &cdData[4]);
+		cd_read_file("MAXWELL.VAG", &cdData[5]);
 
 
-	//Stop reading the CD
-	cd_close();
+		//Stop reading the CD
+		cd_close();
+	#endif
 
 	//load the TIM texture into VRAM
 	//The number is the slot you want to load from.
 	//when we used the cd_read_file function, we
 	//stored the RATTEX1.TIM texture in slot 1
-    loadTexture((u_char *)cdData[1]);
-    loadTexture((u_char *)cdData[4]);
+	#ifdef CD_BOOT
+		loadTexture((u_char *)cdData[1]);
+		loadTexture((u_char *)cdData[4]);
+	#endif
+
+	#ifdef EXE_BOOT
+		loadTexture((u_char *)RATTEX1_TIM);
+		loadTexture((u_char *)CAT_TMD);
+	#endif
 
 	//init spu
 	audioInit();
@@ -129,8 +153,15 @@ void Start() {
     //    Lighting on=1 off=0
     //);
 
-	ObjectCount += LoadTMD(cdData[0], &Object[1], 1); /* Rat */
-	ObjectCount += LoadTMD(cdData[3], &Object[2], 1); /* Cat */
+	#ifdef CD_BOOT
+		ObjectCount += LoadTMD(cdData[0], &Object[1], 1); /* Rat */
+		ObjectCount += LoadTMD(cdData[3], &Object[2], 1); /* Cat */
+	#endif
+
+	#ifdef EXE_BOOT
+		ObjectCount += LoadTMD(RAT_TMD, &Object[1], 1);
+		ObjectCount += LoadTMD(CAT_TMD, &Object[2], 1);
+	#endif
 
 	//Set all the initial starting positions and
 	//rotations here for every loaded object
@@ -195,7 +226,14 @@ void Update () {
 			printf("Loading FREEBIRD to SPU RAM...\n");
 			SpuSetKey(SPU_OFF, SPU_0CH); //stop SPU0 playback
 			SpuFree(l_vag1_spu_addr); //flush RAM of old sound samples
-			audioTransferVagToSPU(cdData[2], 165904, SPU_0CH); //DMA through FREEBIRD
+			#ifdef CD_BOOT
+				audioTransferVagToSPU(cdData[2], 165904, SPU_0CH); //DMA through FREEBIRD
+			#endif
+
+			#ifdef EXE_BOOT
+				audioTransferVagToSPU(FREEBIRD_VAG, FREEBIRD_VAG_len, SPU_0CH);
+			#endif
+
 			reloadSound = false; //stop running next time
 		}
 		if(SpuGetKeyStatus(SPU_0CH)  == SPU_ON_ENV_OFF | SpuGetKeyStatus(SPU_0CH)  == SPU_OFF) {
@@ -208,7 +246,14 @@ void Update () {
 			printf("Loading MAXWELL to SPU RAM...\n");
 			SpuSetKey(SPU_OFF, SPU_0CH); //stop SPU0 playback
 			SpuFree(l_vag1_spu_addr); //flush RAM of old sound samples
-			audioTransferVagToSPU(cdData[5], 182176, SPU_0CH); //DMA through FREEBIRD
+			#ifdef CD_BOOT
+				audioTransferVagToSPU(cdData[5], 182176, SPU_0CH); //DMA through FREEBIRD
+			#endif
+
+			#ifdef EXE_BOOT
+				audioTransferVagToSPU(MAXWELL_VAG, MAXWELL_VAG_len, SPU_0CH);
+			#endif
+
 			reloadSound = false; //stop running next time
 		}
 		if(SpuGetKeyStatus(SPU_0CH)  == SPU_ON_ENV_OFF | SpuGetKeyStatus(SPU_0CH)  == SPU_OFF) {
@@ -241,8 +286,10 @@ void Render () {
 		FntPrint("For your viewing pleasure: MAXWELL\n\n");
 	}
 
-	FntPrint("OBJ Position: (%d, %d, %d)\n", rat.position.vx, rat.position.vy, rat.position.vz);
-	FntPrint("OBJ Rotation: (%d)\n", rat.rotation.vy);
+	#ifdef DEBUG
+		FntPrint("OBJ Position: (%d, %d, %d)\n", rat.position.vx, rat.position.vy, rat.position.vz);
+		FntPrint("OBJ Rotation: (%d)\n", rat.rotation.vy);
+	#endif
 
 	// Calculate the camera and viewpoint
 	CalculateCamera();

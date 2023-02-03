@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<iso_project image_name="game.bin" cue_sheet="game.cue" no_xa="1">
+<iso_project image_name="rat.bin" cue_sheet="rat.cue" no_xa="1">
 	<track type="data">
 		<license file="LICENSEA.DAT"/>
 		<directory_tree>
@@ -13,7 +13,7 @@
 			<file name="CAT.TMD"	type="data"	source="DATA/CAT.TMD"/>
 			<file name="CATBODY.TIM"	type="data"	source="DATA/CATBODY.TIM"/>
 			<file name="MAXWELL.VAG"	type="data"	source="DATA/MAXWELL.VAG"/>
-			<dummy sectors="1"/>
+			<dummy sectors="64"/>
 		</directory_tree>
 	</track>
 </iso_project>
