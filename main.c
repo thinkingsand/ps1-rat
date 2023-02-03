@@ -1,6 +1,6 @@
 //#define EXE_BOOT
 #define CD_BOOT
-#define DEBUG
+//#define DEBUG
 
 //Include all the features you want for your project here
 //Each of these files contains a set of functions you can
@@ -181,9 +181,9 @@ void Start() {
 	rat.rotation.vy = 900;
 
 	//Cat
-	cat.position.vx = 3774;
+	cat.position.vx = 4123;
 	cat.position.vy = 924;
-	cat.position.vz = -3226;
+	cat.position.vz = -3703;
 
 	cat.rotation.vy = 900;
 
@@ -280,7 +280,8 @@ void Render () {
 	}
 
 	#ifdef DEBUG
-		FntPrint("OBJ Position: (%d, %d, %d)\n", rat.position.vx, rat.position.vy, rat.position.vz);
+		FntPrint("RAT Position: (%d, %d, %d)\n", rat.position.vx, rat.position.vy, rat.position.vz);
+		FntPrint("MAXWELL Position: (%d, %d, %d)\n", cat.position.vx, cat.position.vy, cat.position.vz);
 		FntPrint("OBJ Rotation: (%d)\n", rat.rotation.vy);
 	#endif
 
@@ -325,27 +326,47 @@ void Controls () {
 	}
 
 	if (padCheck(Pad1Cross)) {
-		//Move rat forwards
-		newMoveVec = Translate(rat.rotation, 0, 0, movementSpeed * ONE/500);
-		rat.position.vx += newMoveVec.vx;
-		rat.position.vy += newMoveVec.vy;
-		rat.position.vz += newMoveVec.vz;
+		//Move obj forwards
+		if(isRatEnabled) {
+			newMoveVec = Translate(rat.rotation, 0, 0, movementSpeed * ONE/500);
+			rat.position.vx += newMoveVec.vx;
+			rat.position.vy += newMoveVec.vy;
+			rat.position.vz += newMoveVec.vz;
+		} else if(isCatEnabled) {
+			newMoveVec = Translate(cat.rotation, 0, 0, movementSpeed * ONE/500);
+			cat.position.vx += newMoveVec.vx;
+			cat.position.vy += newMoveVec.vy;
+			cat.position.vz += newMoveVec.vz;
+		}
 	}
 
 	if (padCheck(Pad1Square)) {
-		//Move rat backwards
-		newMoveVec = Translate(rat.rotation, 0, 0, -movementSpeed * ONE/500);
-		rat.position.vx += newMoveVec.vx;
-		rat.position.vy += newMoveVec.vy;
-		rat.position.vz += newMoveVec.vz;
+		//Move obj backwards
+		if(isRatEnabled) {
+			newMoveVec = Translate(rat.rotation, 0, 0, -movementSpeed * ONE/500);
+			rat.position.vx += newMoveVec.vx;
+			rat.position.vy += newMoveVec.vy;
+			rat.position.vz += newMoveVec.vz;
+		} else if(isCatEnabled) {
+			newMoveVec = Translate(cat.rotation, 0, 0, -movementSpeed * ONE/500);
+			cat.position.vx += newMoveVec.vx;
+			cat.position.vy += newMoveVec.vy;
+			cat.position.vz += newMoveVec.vz;
+		}
 	}
 
 	if (padCheck(Pad1Select)) {
 		//If you drive too far off screen and get lost, you may
 		//want to reset your rat where you can see it again.
-		rat.position.vx = 3774;
-		rat.position.vy = 924;
-		rat.position.vz = -3226;
+		if(isRatEnabled) {
+			rat.position.vx = 3774;
+			rat.position.vy = 924;
+			rat.position.vz = -3226;
+		} else if(isCatEnabled) {
+			cat.position.vx = 4123;
+			cat.position.vy = 924;
+			cat.position.vz = -3703;
+		}		
 	}
 
 }
