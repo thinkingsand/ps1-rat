@@ -12,7 +12,7 @@
 #include "2D.c"
 #include "3D.c"
 
-#ifdef EXE_BOOT
+#ifdef EXE_BOOT //if running from exe file, import files via header
 	#include "DATA/CAT.H"
 	#include "DATA/CATBODY.H"
 	#include "DATA/FREEBIRD.H"
@@ -34,9 +34,7 @@ int movementSpeed = 7;
 //how fast the rat spins
 int rotationSpeed = 20;
 
-//Store all your CD Files Here
-//the number is how many files
-//you eventually want to load.
+//If loading from CD, init address space
 #ifdef CD_BOOT
 u_long* cdData[6];
 #endif
@@ -59,7 +57,6 @@ struct {
 //The main function is the first
 //thing that runs in your game
 int main() {
-    //all the functions here are described below
 
  	Initialize();
 	Start();
@@ -276,10 +273,6 @@ void Render () {
 	// Render debug text. this is good for seeing what
 	//some variables are doing while the game is running
 	//or just to display some text to the player.
-	//FntPrint("X: forward\n");
-	//FntPrint("Square: reverse\n");
-	//FntPrint("D-pad: Steer\n");
-	//FntPrint("Select: Reset Rat\n");
 	if(isRatEnabled) {
 		FntPrint("For your viewing pleasure: RAT\n\n");
 	} else if(isCatEnabled) {
