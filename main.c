@@ -121,7 +121,7 @@ void Initialize() {
 
 	#ifdef EXE_BOOT
 		loadTexture((u_char *)RATTEX1_TIM);
-		loadTexture((u_char *)CAT_TMD);
+		loadTexture((u_char *)CATBODY_TIM);
 	#endif
 
 	//init spu
