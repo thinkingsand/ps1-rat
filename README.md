@@ -4,6 +4,8 @@ A PS1 port of the horizontally spinning rat meme, because sanity is overrated an
 
 https://user-images.githubusercontent.com/2265483/224830805-bf2ad4ce-aa29-46ec-b5d1-ac2d411f92d4.MP4
 
+*running on an actual PAL PS1 through a capture card, because I hate myself
+
 ## Usage
 
 To run, fire up a PS1 emulator - I recommend [PCSX-Redux](https://github.com/grumpycoders/pcsx-redux), then use the "load binary" menu to run [the PS-EXE file](https://github.com/Mcharlsto/ps1-rat/releases/download/1.0.1/RAT.ps-exe).
