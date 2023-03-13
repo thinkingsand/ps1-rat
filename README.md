@@ -2,7 +2,7 @@
 
 A PS1 port of the horizontally spinning rat meme, because sanity is overrated anyway.
 
-![rat](https://www.horizontallyspinningrat.tk/rat.gif)
+https://user-images.githubusercontent.com/2265483/224830805-bf2ad4ce-aa29-46ec-b5d1-ac2d411f92d4.MP4
 
 ## Usage
 
